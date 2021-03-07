@@ -87,12 +87,35 @@ private:
         0xF0, 0x80, 0xF0, 0x80, 0x80  // F
     };
 
+    // Size of function pointer tables
+    static constexpr int kSizeTable{0xF + 1};
+    static constexpr int kSizeTable0{0xE + 1};
+    static constexpr int kSizeTable8{0xE + 1};
+    static constexpr int kSizeTableE{0xE + 1};
+    static constexpr int kSizeTableF{0x65 + 1};
+
+    // Function pointer tables
+    typedef void (Chip8::*CPU)(); // Function pointer type without an return value and parameters 
+    CPU cpu[kSizeTable]{};
+    CPU cpu0[kSizeTable0]{};
+    CPU cpu8[kSizeTable8]{};
+    CPU cpuE[kSizeTableE]{};
+    CPU cpuF[kSizeTableF]{};
+
+    // Methodes to jump to different table
+    void jumpCpu0();
+    void jumpCpu8();
+    void jumpCpuE();
+    void jumpCpuF();
+
     void initialize();
     void resetTime();
+    void setupTables();
     void disassembleInstructions();
     std::string disassemble(uint16_t address);
-    
+
     // Opcode methodes
+    void CPU_NOP();
     void CPU_00E0();
     void CPU_00EE();
     void CPU_1NNN();
